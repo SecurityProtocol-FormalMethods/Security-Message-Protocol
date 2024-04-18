@@ -37,7 +37,19 @@ void decrypt(int pvk) {
     }
 
 
-
+bool isPrime(int n) {
+    int i;
+    if (n &lt;= 1) {
+        return false;
+    }
+    
+    for (i = 2; i &lt;= n / 2; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 </declaration>
 	<template>
@@ -192,33 +204,28 @@ system p1,p2,p3;
 		<query>
 			<formula>A[] not deadlock
 </formula>
-			<comment/>
+			<comment>invariantly the process is not deadlocked.</comment>
 			<result outcome="success" type="quality" timestamp="2024-04-18 00:58:07 -0400">
 			</result>
 		</query>
 		<query>
-			<formula/>
-			<comment/>
+			<formula>E&lt;&gt; (isPrime(pvk))
+</formula>
+			<comment>chack if there exists an instance where the public key is not prime</comment>
+			<result outcome="success" type="quality" timestamp="2024-04-18 03:54:28 -0400">
+			</result>
 		</query>
 		<query>
-			<formula/>
+			<formula>A[] ciphertext != 1</formula>
 			<comment/>
+			<result outcome="success" type="quality" timestamp="2024-04-18 03:59:49 -0400">
+			</result>
 		</query>
 		<query>
-			<formula/>
-			<comment/>
-		</query>
-		<query>
-			<formula/>
-			<comment/>
-		</query>
-		<query>
-			<formula/>
-			<comment/>
-		</query>
-		<query>
-			<formula/>
-			<comment/>
+			<formula>A[] Modulus != 33</formula>
+			<comment>Is there any reachable state where modulus is not 33</comment>
+			<result outcome="failure" type="quality" timestamp="2024-04-18 04:00:20 -0400">
+			</result>
 		</query>
 	</queries>
 </nta>
