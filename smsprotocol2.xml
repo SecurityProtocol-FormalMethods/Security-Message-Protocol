@@ -3,7 +3,32 @@
 <nta>
 	<declaration>// Place global declarations here.
 chan keys, sender, recvr;
-int mutex_keys;</declaration>
+int mutex_keys, pvk, pck;
+// Define constants for RSA
+const int Modulus = 33; // For simplicity, use a small modulus for demonstration purposes
+const int Public_Key = 3; // Public exponent (e)
+const int Private_key = 7; // Private exponent (d)
+int plaintext = 108;
+int ciphertext;
+int decryptedtext;
+
+// RSA Encryption   
+void encrypt(int Public_key) {
+        // Perform encryption (simplified for demonstration)
+        ciphertext = (plaintext ^ Public_Key) % Modulus;
+    }
+
+void decrypt(int Private_Key) {
+        // Perform decryption (simplified for demonstration)
+        decryptedtext = (ciphertext ^ Private_Key) % Modulus;
+    }
+
+
+
+
+
+
+</declaration>
 	<template>
 		<name x="5" y="5">Sender</name>
 		<declaration>// Place local declarations here.
@@ -46,11 +71,13 @@ int mutex_keys;</declaration>
 		<transition id="id9">
 			<source ref="id3"/>
 			<target ref="id4"/>
+			<label kind="assignment" x="-33" y="123">encrypt(pck)</label>
 		</transition>
 		<transition id="id10">
 			<source ref="id2"/>
 			<target ref="id3"/>
 			<label kind="synchronisation" x="178" y="93">recvr!</label>
+			<label kind="assignment" x="136" y="110">pck = 5</label>
 		</transition>
 		<transition id="id11">
 			<source ref="id0"/>
@@ -94,11 +121,13 @@ int mutex_keys;</declaration>
 		<transition id="id20">
 			<source ref="id16"/>
 			<target ref="id17"/>
+			<label kind="assignment" x="-160" y="106">decrypt(pvk)</label>
 		</transition>
 		<transition id="id21">
 			<source ref="id15"/>
 			<target ref="id16"/>
 			<label kind="synchronisation" x="59" y="93">sender!</label>
+			<label kind="assignment" x="59" y="110">pvk = 11</label>
 		</transition>
 		<transition id="id22">
 			<source ref="id13"/>
