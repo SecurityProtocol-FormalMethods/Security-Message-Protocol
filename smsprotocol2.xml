@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan keys, sender, recvr;
+int mutex_keys;</declaration>
+	<template>
+		<name x="5" y="5">Sender</name>
+		<declaration>// Place local declarations here.
+</declaration>
+		<location id="id0" x="-255" y="-68">
+			<name x="-265" y="-102">Idle</name>
+		</location>
+		<location id="id1" x="-59" y="-59">
+			<name x="-69" y="-93">GetKeys</name>
+		</location>
+		<location id="id2" x="255" y="59">
+			<name x="245" y="25">SendrPCK</name>
+		</location>
+		<location id="id3" x="102" y="119">
+			<name x="92" y="85">GetrPCK</name>
+		</location>
+		<location id="id4" x="-51" y="127">
+			<name x="-61" y="93">EncryptMsg</name>
+		</location>
+		<location id="id5" x="-238" y="119">
+			<name x="-248" y="85">SendMsg</name>
+		</location>
+		<init ref="id0"/>
+		<transition id="id6">
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="34" y="-85">mutex_keys != 0</label>
+			<label kind="synchronisation" x="34" y="-59">sender?</label>
+			<label kind="assignment" x="34" y="-42">mutex_keys = 0</label>
+		</transition>
+		<transition id="id7">
+			<source ref="id5"/>
+			<target ref="id0"/>
+		</transition>
+		<transition id="id8">
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-187" y="127">sender?</label>
+		</transition>
+		<transition id="id9">
+			<source ref="id3"/>
+			<target ref="id4"/>
+		</transition>
+		<transition id="id10">
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="178" y="93">recvr!</label>
+		</transition>
+		<transition id="id11">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-221" y="-119">mutex_keys == 0</label>
+			<label kind="synchronisation" x="-178" y="-93">keys!</label>
+		</transition>
+	</template>
+	<template>
+		<name>Receiver</name>
+		<location id="id12" x="-280" y="-68">
+			<name x="-290" y="-102">Idle</name>
+		</location>
+		<location id="id13" x="-153" y="-68">
+			<name x="-163" y="-102">GetsPCK</name>
+		</location>
+		<location id="id14" x="8" y="-59">
+			<name x="-2" y="-93">GetKeys</name>
+		</location>
+		<location id="id15" x="153" y="34">
+			<name x="143" y="0">SendsPCK</name>
+		</location>
+		<location id="id16" x="0" y="119">
+			<name x="-51" y="144">GetEncryptMsg</name>
+		</location>
+		<location id="id17" x="-178" y="93">
+			<name x="-188" y="59">DecryptMsg</name>
+		</location>
+		<init ref="id12"/>
+		<transition id="id18">
+			<source ref="id14"/>
+			<target ref="id15"/>
+			<label kind="guard" x="68" y="-85">mutex_keys != 0</label>
+			<label kind="synchronisation" x="68" y="-59">recvr?</label>
+			<label kind="assignment" x="59" y="-42">mutex_keys = 0</label>
+		</transition>
+		<transition id="id19">
+			<source ref="id17"/>
+			<target ref="id12"/>
+		</transition>
+		<transition id="id20">
+			<source ref="id16"/>
+			<target ref="id17"/>
+		</transition>
+		<transition id="id21">
+			<source ref="id15"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="59" y="93">sender!</label>
+		</transition>
+		<transition id="id22">
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="guard" x="-119" y="-127">mutex_keys == 0</label>
+			<label kind="synchronisation" x="-119" y="-85">keys!</label>
+		</transition>
+		<transition id="id23">
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-238" y="-93">sender!</label>
+		</transition>
+	</template>
+	<template>
+		<name>KeyGenerator</name>
+		<location id="id24" x="-204" y="-119">
+			<name x="-214" y="-153">Idle</name>
+		</location>
+		<location id="id25" x="0" y="-119">
+			<name x="-10" y="-153">MakePCK</name>
+		</location>
+		<location id="id26" x="-102" y="0">
+			<name x="-127" y="25">MakePRK</name>
+		</location>
+		<init ref="id24"/>
+		<transition id="id27">
+			<source ref="id26"/>
+			<target ref="id24"/>
+			<label kind="assignment" x="-272" y="-51">mutex_keys = 1</label>
+		</transition>
+		<transition id="id28">
+			<source ref="id25"/>
+			<target ref="id26"/>
+		</transition>
+		<transition id="id29">
+			<source ref="id24"/>
+			<target ref="id25"/>
+			<label kind="synchronisation" x="-136" y="-144">keys?</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+p1 = Sender();
+p2 = Receiver();
+p3 = KeyGenerator();
+// List one or more processes to be composed into a system.
+system p1,p2,p3;
+</system>
+	<queries>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+	</queries>
+</nta>
