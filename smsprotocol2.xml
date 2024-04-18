@@ -3,27 +3,38 @@
 <nta>
 	<declaration>// Place global declarations here.
 chan keys, sender, recvr;
-int mutex_keys, pvk, pck;
+int mutex_keys;
+int pvks, pcks, pvk, pck;// Public exponent (e) &amp; Private exponent (d)
 // Define constants for RSA
 const int Modulus = 33; // For simplicity, use a small modulus for demonstration purposes
-const int Public_Key = 3; // Public exponent (e)
-const int Private_key = 7; // Private exponent (d)
-int plaintext = 108;
+const int plaintext = 2;
 int ciphertext;
 int decryptedtext;
 
 // RSA Encryption   
-void encrypt(int Public_key) {
+void encrypt(int pck) {
         // Perform encryption (simplified for demonstration)
-        ciphertext = (plaintext ^ Public_Key) % Modulus;
+        int base = plaintext;
+        int result = 1;
+        int a;
+        for(a = 1; a &lt; pck+1; a++) {
+             result *= base;
+        } // plaintext^pck
+    
+        ciphertext = result % Modulus;
     }
 
-void decrypt(int Private_Key) {
+void decrypt(int pvk) {
         // Perform decryption (simplified for demonstration)
-        decryptedtext = (ciphertext ^ Private_Key) % Modulus;
+        int b = ciphertext;
+        int r = 1;
+        int c;
+        for(c = 1; c &lt; pvk+1; c++) {
+             r *= b;
+        } // ciphertext^pck
+    
+        decryptedtext = r % Modulus;
     }
-
-
 
 
 
@@ -77,7 +88,6 @@ void decrypt(int Private_Key) {
 			<source ref="id2"/>
 			<target ref="id3"/>
 			<label kind="synchronisation" x="178" y="93">recvr!</label>
-			<label kind="assignment" x="136" y="110">pck = 5</label>
 		</transition>
 		<transition id="id11">
 			<source ref="id0"/>
@@ -127,7 +137,6 @@ void decrypt(int Private_Key) {
 			<source ref="id15"/>
 			<target ref="id16"/>
 			<label kind="synchronisation" x="59" y="93">sender!</label>
-			<label kind="assignment" x="59" y="110">pvk = 11</label>
 		</transition>
 		<transition id="id22">
 			<source ref="id13"/>
@@ -161,11 +170,15 @@ void decrypt(int Private_Key) {
 		<transition id="id28">
 			<source ref="id25"/>
 			<target ref="id26"/>
+			<label kind="assignment" x="-51" y="-59">pvks = 47,
+pvk = 3</label>
 		</transition>
 		<transition id="id29">
 			<source ref="id24"/>
 			<target ref="id25"/>
 			<label kind="synchronisation" x="-136" y="-144">keys?</label>
+			<label kind="assignment" x="-144" y="-187">pcks = 3,
+pck  = 7</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
@@ -176,6 +189,33 @@ p3 = KeyGenerator();
 system p1,p2,p3;
 </system>
 	<queries>
+		<query>
+			<formula>A[] not deadlock
+</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2024-04-18 00:58:07 -0400">
+			</result>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
 		<query>
 			<formula/>
 			<comment/>
