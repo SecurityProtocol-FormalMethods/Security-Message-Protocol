@@ -31,7 +31,7 @@ void decrypt(int pvk) {
         int c;
         for(c = 1; c &lt; pvk+1; c++) {
              r *= b;
-        } // ciphertext^pck
+        } // ciphertext^pvk
     
         decryptedtext = r % Modulus;
     }
